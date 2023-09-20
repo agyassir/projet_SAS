@@ -16,10 +16,12 @@ typedef struct tache
     int status;
     deadline time;
 } tache;
+tache tach[50];
+int n = 0;
 
-void ajouter(tache tach[500], int n)
+void ajouter()
 {
-  int status;
+    int status;
     printf("entrer le titre de votre tache\n");
     scanf("%s \n", tach[n].name);
     printf("entrer la description de votre tache\n");
@@ -28,11 +30,11 @@ void ajouter(tache tach[500], int n)
     scanf(" %d \n", &tach[n].status);
     printf("entrer le deadline en format jj/mm/aaaa\n");
     scanf("%d/%d/%d", tach[n].time.d, tach[n].time.m, tach[n].time.y);
-    tach[n].id=n;
+    tach[n].id = n;
 }
 
 // fonction menu ajouter
-int menu_ajouter(tache y[500],int n)
+int menu_ajouter()
 {
     int a;
     printf("====================Ajouter====================\n\n");
@@ -42,19 +44,19 @@ int menu_ajouter(tache y[500],int n)
     scanf("%d", &a);
     while (a = !2)
     {
-        ajouter(&y[500], n);
+        ajouter();
         n++;
-        printf ("\n pour quitter inserer 2 ."); 
+        printf("\n pour quitter inserer 2 .");
     };
     return n;
 }
 // fin de fonction menu ajouter
 // fonction menu d'affichage
-void menu_affichage(tache tach[500],int n)
+void menu_affichage()
 {
     int a, n;
     printf("====================Afficher la list====================\n\n");
-    printf("1.affichage dans l'ordre alphabetic du tache titre:\n",);
+    printf("1.affichage dans l'ordre alphabetic du tache titre:\n");
     printf("2.affichage d'apres les deadline");
     printf("3.affichage par le plus urgent");
     printf("\n entrer le nombre corespandent o votre choix:");
@@ -62,13 +64,13 @@ void menu_affichage(tache tach[500],int n)
     switch (a)
     {
     case 1:
-        ordre_alpha(&tach[500],n);
+        ordre_alpha();
         break;
     case 2:
-        ordre_deadline(&tach[500],n);
+        ordre_deadline();
         break;
     case 3:
-        ordre_urgent(&tach[500],n);
+        ordre_urgent();
         break;
     default:
 
@@ -76,24 +78,27 @@ void menu_affichage(tache tach[500],int n)
     }
 }
 // fin de fonction menu d'affichage
-void ordre_alpha(tache tach[500],int n){
-for (int i = 0; i < n; i++)
+void ordre_alpha()
 {
-    /* code */
-};}
-//first menu function
-void menu(tache tach[500]){
-     int a,n=0;
+    for (int i = 0; i < n; i++)
+    {
+        /* code */
+    };
+}
+// first menu function
+void menu()
+{
+    int a;
     printf("===================toDo list===================\n\n1-ajouter une ou plusieur taches:\n2-affichage:\n3-recherche:\n4-statistiques:\n5-quitter\n entrer le numero correspendant a votre choix: ");
     scanf("%d", &a);
     switch (a)
     {
     case 1:
-       return(menu_ajouter(&tach[500],n));
-        menu(&tach[500]);
+        return (menu_ajouter());
+        menu();
         break;
     case 2:
-        return(menu_affichage(&tach[500],n));
+        return (menu_affichage());
         break;
     /*case 3:
         recherche();
@@ -107,10 +112,9 @@ void menu(tache tach[500]){
         break;
     };
 }
-//my main programme
+// my main programme
 int main()
 {
-    tache tach[500];
-   menu(&tach[500]);
+    menu();
     return 0;
 }
