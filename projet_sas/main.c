@@ -48,7 +48,6 @@ int menu_ajouter()
         n++;
         printf("\n pour quitter inserer 2 .");
     };
-    return n;
 }
 // fin de fonction menu ajouter
 // fonction menu d'affichage
