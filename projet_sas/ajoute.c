@@ -42,14 +42,17 @@ tache tach[50];
 int n = 0;
 
 // start of the program
-
+void SS(){
+    
+}
 void DTS(){
-    char a[50];
-    printf("entrer la date  de tache que vous voulais rechercher:\n");
-    scanf("%s", &a[50]);
+    date a;
+
+    printf("entrer la date(en format jj/mm/aaaa)  de tache que vous voulais rechercher:\n");
+    scanf("%d/%d/%d", a.d,a.m,a.a);
     for (int i = 0; i < n + 1; i++)
     {
-        if (tach[i]. == a)
+        if (tach[i].today.d == a.d && tach[i].today.m == a.m && tach[i].today.a == a.a)
         {
             if (tach[i].status < 4 && tach[i].status > 0)
             {
@@ -82,6 +85,7 @@ void DTS(){
         }
     }
 }
+
 void DS(){
    char a[100];
     printf("entrer le description de tache que vous voulais rechercher:\n");
