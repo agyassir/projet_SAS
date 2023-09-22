@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 // structure de deadline
 typedef struct deadline
@@ -8,18 +9,23 @@ typedef struct deadline
     int m;
     int h;
 } deadline;
+
 typedef struct collaboratoir
 {
     char nom[50];
     char prenom[50];
     char email[70];
 } colla;
+
 typedef struct date
 {
     int d;
     int m;
     int a;
+    int h;
+    int mm;
 } date;
+
 // structure de tache
 typedef struct tache
 {
@@ -31,8 +37,91 @@ typedef struct tache
     date today;
     colla user;
 } tache;
+
 tache tach[50];
 int n = 0;
+
+// start of the program
+
+void DTS(){
+    char a[50];
+    printf("entrer la date  de tache que vous voulais rechercher:\n");
+    scanf("%s", &a[50]);
+    for (int i = 0; i < n + 1; i++)
+    {
+        if (tach[i]. == a)
+        {
+            if (tach[i].status < 4 && tach[i].status > 0)
+            {
+                printf("l'id de cette tache est : %d\n", tach[i].id);
+                printf("le nom de cette tache est : %s\n", tach[i].name);
+                printf("la description de cette tache est : %s\n", tach[i].description);
+                switch (tach[i].status)
+                {
+                case 1:
+                    printf("status :to do\n");
+                    printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+                    break;
+                case 3:
+                    printf("status :done\n");
+                    printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+
+                    break;
+                case 2:
+                    printf("status :doing\n");
+                    printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+                    break;
+                default:
+                    break;
+                }
+            }
+            else if (tach[i].status < 4)
+            {
+                printf("ce titre a etait supprimer");
+            }
+        }
+    }
+}
+void DS(){
+   char a[100];
+    printf("entrer le description de tache que vous voulais rechercher:\n");
+    scanf("%s", &a[50]);
+    for (int i = 0; i < n + 1; i++)
+    {
+        if (tach[i].description == a)
+        {
+            if (tach[i].status < 4 && tach[i].status > 0)
+            {
+                printf("l'id de cette tache est : %d\n", tach[i].id);
+                printf("le nom de cette tache est : %s\n", tach[i].name);
+                printf("la description de cette tache est : %s\n", tach[i].description);
+                switch (tach[i].status)
+                {
+                case 1:
+                    printf("status :to do\n");
+                    printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+                    break;
+                case 3:
+                    printf("status :done\n");
+                    printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+
+                    break;
+                case 2:
+                    printf("status :doing\n");
+                    printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+                    break;
+                default:
+                    break;
+                }
+            }
+            else if (tach[i].status < 4)
+            {
+                printf("ce titre a etait supprimer");
+            }
+        }
+    } 
+}
+
 void cic()
 {
     for (int i = 0; i < n + 1; i++)
@@ -71,8 +160,15 @@ void cic()
         printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
     }
 }
+
 void delai()
 {
+    time_t timestamp = time(NULL);
+    struct tm *timeInfos = localtime(&timestamp);
+    int h, mm, d;
+    d = timeInfos->tm_mday;
+    h = timeInfos->tm_hour;
+    mm = timeInfos->tm_min;
     for (int i = 0; i < n + 1; i++)
     {
 
@@ -98,8 +194,50 @@ void delai()
         default:
             break;
         }
+        d = (tach[i].today.d + tach[i].time.d) - d;
+        if (d > 0)
+        {
+            h = (tach[i].time.h + tach[i].today.h) - h;
+            if (h > 0)
+            {
+                mm = (tach[i].today.m + tach[i].time.m) - mm;
+                if (mm > 0)
+                {
+                    printf("dealaid :  %d jour %d heure %d minutes", d, h, mm);
+                }
+                else if (mm == 0)
+                {
+                    printf("dealaid : %d jour %d heure 0 minute", d, h);
+                }
+                else if (mm < 0)
+                {
+                    h = (mm / 60) - tach[i].time.h - h;
+                    if (h > 0)
+                    {
+                        printf("dealaid : %d jour %d heure 0 minute", d, h);
+                    }
+                    else if (h == 0)
+                    {
+                        printf("dealaid : %d jour 0 heure 0 minute", d, h);
+                    }
+                    else if (h < 0)
+                    {
+                        d = ((h / 24) - tach[i].time.d) - d;
+                        if (d > 0)
+                        {
+                            printf("dealaid : %d jour 0 heure 0 minute", d);
+                        }
+                        else if (d < 0 || d == 0)
+                        {
+                            printf("dealaid : out of time /done");
+                        }
+                    }
+                }
+            }
+        }
     }
 }
+
 void menu_stats()
 {
     int a;
@@ -122,10 +260,11 @@ void menu_stats()
         break;
     }
 }
+
 void NS()
 {
     char a[50];
-    printf("entrer le titre de tache que vous voulais modifier:\n");
+    printf("entrer le titre de tache que vous voulais rechercher:\n");
     scanf("%s", &a[50]);
     for (int i = 0; i < n + 1; i++)
     {
@@ -162,10 +301,11 @@ void NS()
         }
     }
 }
+
 void IDS()
 {
     int a;
-    printf("entrer l'id de tache que vous voulais modifier:\n");
+    printf("entrer l'id de tache que vous voulais rechercher:\n");
     scanf("%d", &a);
     for (int i = 0; i < n + 1; i++)
     {
@@ -202,13 +342,17 @@ void IDS()
         }
     }
 }
+
 void menu_recherche()
 {
     int a;
     printf("====================rechercher====================\n\n");
     printf("1.recherche par ID:\n");
-    printf("2.recheche par titre");
-    printf("3.quitter");
+    printf("2.recheche par titre\n");
+    printf("3.recherche par description:\n");
+    printf("5.recherche par date:\n");
+    printf("6.recherche par status:\n");
+    printf("7.quitter");
     printf("\n entrer le nombre corespandent o votre choix:\n");
     scanf("%d", &a);
     switch (a)
@@ -219,10 +363,22 @@ void menu_recherche()
     case 2:
         NS();
         break;
-    case 3:;
+        case 3:
+        DS();
         break;
+        /*case 4:
+        DLS();
+        break;
+        case 5:
+        DTS();
+        break;
+        case 3:
+        SS();
+        break;
+        */
     }
 }
+
 void mod_desc()
 {
     int a;
@@ -238,6 +394,7 @@ void mod_desc()
         }
     }
 }
+
 void mod_stt()
 {
     int a;
@@ -250,9 +407,16 @@ void mod_stt()
         {
             printf("1.toDo\n2.doing\n3,done\n");
             scanf("%d", tach[i].status);
+            if (tach[i].status == 3)
+            {
+                printf("quelle user a finit cette tache");
+                for (int j = 0; j < n; j++)
+                    printf("%s %s\n", tach[i].user.nom, tach[i].user.prenom);
+            }
         }
     }
 }
+
 void mod_deadline()
 {
     int a;
@@ -281,6 +445,7 @@ void mod_deadline()
         }
     }
 }
+
 void modification()
 {
     int a;
@@ -306,6 +471,7 @@ void modification()
         break;
     }
 }
+
 void supprimer()
 {
     int a;
@@ -320,6 +486,7 @@ void supprimer()
         }
     }
 }
+
 void ordre_deadline()
 {
     tache x;
@@ -386,87 +553,48 @@ void ordre_deadline()
 void ordre_alpha()
 {
     tache x;
-    for (int i = 0; i < n; i++)
+    for (int i=0; i<n; i++)
     {
-        for (int j = i + 1; j < n + 1; j++)
+        for (int j=i+1; j<n ; j++)
         {
-
-            if (tach[i].name[1] >= 65 && tach[i].name[1] <= 90)
+            if (strcasecmp(tach[i].name, tach[j].name) > 0)
             {
-                tach[i].name[1] = tach[i].name[1] + 32;
-            }
-            else if (tach[j].name[1] >= 65 && tach[j].name[1] <= 90)
-            {
-                tach[i].name[1] = tach[i].name[1] + 32;
-            }
-            if (tach[i].name[1] > tach[j].name[1])
-            {
-
                 x = tach[i];
                 tach[i] = tach[j];
                 tach[j] = x;
             }
-            else if (tach[i].name[1] == tach[j].name[1])
-            {
-                if (tach[i].name[2] >= 65 && tach[i].name[2] <= 90)
-                {
-                    tach[i].name[1] = tach[i].name[1] + 32;
-                }
-                else if (tach[j].name[2] >= 65 && tach[j].name[2] <= 90)
-                {
-                    tach[i].name[2] = tach[i].name[2] + 32;
-                }
-                if (tach[i].name[2] > tach[j].name[2])
-                {
-                    x = tach[i];
-                    tach[i] = tach[j];
-                    tach[j] = x;
-                }
-                else if (tach[i].name[2] == tach[j].name[2])
-                {
-                    if (tach[i].name[3] >= 65 && tach[i].name[3] <= 90)
-                    {
-                        tach[i].name[3] = tach[i].name[3] + 32;
-                    }
-                    else if (tach[j].name[2] >= 65 && tach[j].name[3] <= 90)
-                    {
-                        tach[i].name[1] = tach[i].name[1] + 32;
-                    }
-                    if (tach[i].name[3] > tach[j].name[3])
-                    {
-                        x = tach[i];
-                        tach[i] = tach[j];
-                        tach[j] = x;
-                    }
-                }
-            }
         }
     }
     for (int i = 0; i < n; i++)
     {
-        printf("l'id de cette tache est : %d\n", tach[i].id);
-        printf("le nom de cette tache est : %s\n", tach[i].name);
-        printf("la description de cette tache est : %s\n", tach[i].description);
-        switch (tach[i].status)
+        if (tach[i].status < 4 && tach[i].status > 0)
         {
-        case 1:
-            printf("status :to do\n");
-            printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
-            break;
-        case 3:
-            printf("status :done\n");
-            break;
-        case 2:
-            printf("status :doing\n");
-            printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
-            break;
-        default:
-            printf("status :supprimer\n");
-            break;
+            printf("==================================================\n");
+            printf("l'id de cette tache est : %d\n", tach[i].id);
+            printf("le nom de cette tache est : %s\n", tach[i].name);
+            printf("la description de cette tache est : %s\n", tach[i].description);
+            switch (tach[i].status)
+            {
+            case 1:
+                printf("status :to do\n");
+                printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+                break;
+            case 3:
+                printf("status :done\n");
+                break;
+            case 2:
+                printf("status :doing\n");
+                printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+                break;
+            default:
+                printf("status :supprimer\n");
+                break;
+            }
+            printf("---------------------------------------------\n");
         }
-        printf("---------------------------------------------\n");
     }
 }
+
 void ordre_urgent()
 {
 
@@ -476,63 +604,33 @@ void ordre_urgent()
     {
         if (tach[i].status < 4 && tach[i].status > 0)
         {
-            for (int j = i + 1; i < n + 1; i++)
+
+            if (tach[i].time.d <= 3)
             {
-                if (tach[i].time.d < 3 && tach[j].time.d < 3)
+                printf("---------------------------------------------\n");
+                printf("l'id de cette tache est : %d\n", tach[i].id);
+                printf("le nom de cette tache est : %s\n", tach[i].name);
+                printf("la description de cette tache est : %s\n", tach[i].description);
+                switch (tach[i].status)
                 {
-                    a++;
-                    if (tach[i].time.d > tach[j].time.d)
-                    {
-                        x = tach[i];
-                        tach[i] = tach[j];
-                        tach[j] = x;
-                    }
-                    else if (tach[i].time.d == tach[j].time.d)
-                    {
-                        if (tach[i].time.h > tach[j].time.h)
-                        {
-                            x = tach[i];
-                            tach[i] = tach[j];
-                            tach[j] = x;
-                        }
-                        else if (tach[i].time.h == tach[j].time.h)
-                        {
-                            if (tach[i].time.m > tach[j].time.d)
-                            {
-                                x = tach[i];
-                                tach[i] = tach[j];
-                                tach[j] = x;
-                            }
-                        }
-                    }
+                case 1:
+                    printf("status :to do\n");
+                    printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+                    break;
+                case 3:
+                    printf("status :done\n");
+                    break;
+                case 2:
+                    printf("status :doing\n");
+                    printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
+                    break;
+                default:
+                    printf("status :supprimer\n");
+                    break;
                 }
+                printf("---------------------------------------------\n");
             }
         }
-    }
-    for (int i = 0; i < a; i++)
-    {
-        printf("---------------------------------------------\n");
-        printf("l'id de cette tache est : %d\n", tach[i].id);
-        printf("le nom de cette tache est : %s\n", tach[i].name);
-        printf("la description de cette tache est : %s\n", tach[i].description);
-        switch (tach[i].status)
-        {
-        case 1:
-            printf("status :to do\n");
-            printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
-            break;
-        case 3:
-            printf("status :done\n");
-            break;
-        case 2:
-            printf("status :doing\n");
-            printf("le deadline de cette tache est : %djours, %d hours and %d minutes \n", tach[i].time.d, tach[i].time.h, tach[i].time.m);
-            break;
-        default:
-            printf("status :supprimer\n");
-            break;
-        }
-        printf("---------------------------------------------\n");
     }
 }
 
@@ -565,30 +663,36 @@ void menu_affichage()
             default:
                 break;
             }
+            time_t timestamp = time(NULL);
+            struct tm *timeInfos = localtime(&timestamp);
+            printf("user: %s %s\n", tach[n].user.nom, tach[n].user.prenom);
+            printf("l'email d'user: %s\n", tach[n].user.email);
+            printf("posted on %d/%d/%d\n", timeInfos->tm_mon, timeInfos->tm_mday, timeInfos->tm_year + 1900);
+        printf("==========================================================\n");
         }
-        printf("---------------------------------------------------\n");
-        printf("1.affichage dans l'ordre alphabetic du titre:\n");
-        printf("2.affichage d'apres les deadline\n");
-        printf("3.affichage par le plus urgent\n");
-        printf("\n entrer le nombre corespandent o votre choix: \n");
-        scanf("%d", &a);
-        switch (a)
-        {
-        case 1:
-            ordre_alpha();
-            break;
-        case 2:
-            ordre_deadline();
-            break;
-        case 3:
-            ordre_urgent();
-            break;
-        default:
-
-            break;
-        }
-        printf("%d", n);
     }
+    printf("---------------------------------------------------\n");
+    printf("1.affichage dans l'ordre alphabetic du titre:\n");
+    printf("2.affichage d'apres les deadline\n");
+    printf("3.affichage par le plus urgent\n");
+    printf("\n entrer le nombre corespandent o votre choix: \n");
+    scanf("%d", &a);
+    switch (a)
+    {
+    case 1:
+        ordre_alpha();
+        break;
+    case 2:
+        ordre_deadline();
+        break;
+    case 3:
+        ordre_urgent();
+        break;
+    default:
+
+        break;
+    }
+    printf("%d", n);
 }
 
 void ajouter()
@@ -598,17 +702,11 @@ void ajouter()
     scanf("%s", tach[n].name);
     printf("entrer la description de votre tache\n");
     scanf("%s", tach[n].description);
-
-    printf("entrer status de votre tache\n 1.est-ce à realiser\n2.en realisation\n3.realiser\n");
-    scanf("%d", &tach[n].status);
-    if (tach[n].status == 1 || tach[n].status == 2)
-    {
-        printf("entrer le deadline en format jour/hours/minutes \n");
-        scanf("%d/%d/%d", &tach[n].time.d, &tach[n].time.h, &tach[n].time.m);
-    }
-    printf("entrer le titre de votre coe\n");
+    printf("entrer le deadline en format jour/hours/minutes \n");
+    scanf("%d/%d/%d", &tach[n].time.d, &tach[n].time.h, &tach[n].time.m);
+    printf("entrer le titre de user\n");
     scanf("%s", tach[n].user.nom);
-    printf("entrer la description de votre coe\n");
+    printf("entrer le prenom de user\n");
     scanf("%s", tach[n].user.prenom);
     printf("entrer l'email sil vous plait\n");
     scanf("%s", tach[n].user.email);
@@ -618,6 +716,10 @@ void ajouter()
     tach[n].today.a = timeInfos->tm_year + 1900;
     tach[n].today.m = timeInfos->tm_mon + 1;
     tach[n].today.d = timeInfos->tm_mday;
+    tach[n].today.h = timeInfos->tm_hour;
+    tach[n].today.mm = timeInfos->tm_min;
+    tach[n].status = 1;
+    n++;
 }
 
 void menu_ajouter()
@@ -631,8 +733,7 @@ void menu_ajouter()
     while (a == 1)
     {
         ajouter();
-        n++;
-        printf("\n pour quitter inserer 2 et pour ajouter une autre appuiyer sur 1\n");
+        printf("\n1.pour ajouter une autre tache\n 2.pour quitter insertion\n");
         scanf("%d", &a);
     };
 }
@@ -640,7 +741,7 @@ void menu_ajouter()
 void menu()
 {
     int a;
-    printf("===================toDo list===================\n\n1-ajouter une ou plusieur taches:\n2-affichage:\n3-modification:\n4-supprimer:\n5-quitter\n entrer le numero correspendant a votre choix: ");
+    printf("===================toDo list===================\n\n1-ajouter une ou plusieur taches:\n2-affichage:\n3-modification:\n4-supprimer:\n5-rechercher\n6-statistique\n7.quitter \nentrer le numero correspendant a votre choix: ");
     scanf("%d", &a);
     switch (a)
     {
@@ -677,4 +778,5 @@ void menu()
 int main()
 {
     menu();
+    system(exit);
 }
